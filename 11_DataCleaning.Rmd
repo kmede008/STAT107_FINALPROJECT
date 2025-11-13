@@ -1,0 +1,89 @@
+---
+title: "Data Cleaning - Global Temp"
+author: "Katherine Mederos"
+date: "2025-11-11"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+library(here)  # handles paths reliably
+source(here("r","00_requirements.R"))
+knitr::opts_chunk$set(echo = TRUE)
+
+```
+
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+```{r}
+raw_lines <- readLines(here("data", "GlobalTemperatures.csv"), n = 10)
+raw_lines
+```
+
+
+```{r clean-data}
+library(readr)
+library(dplyr)
+library(tidyr)
+library(here)
+
+# Read the data (skip the header lines)
+global_temp <- read_csv(
+  here("data", "GlobalTemperatures.csv"),
+  skip = 3,                # skip the 3 header lines
+  show_col_types = FALSE
+)
+
+# Clean the data
+clean_temp <- global_temp %>%
+  rename(
+    Year = Date,
+    Temp = Anomaly
+  ) %>%
+  mutate(
+    Year = as.numeric(Year),
+    Temp = as.numeric(Temp)
+  ) %>%
+  drop_na()
+
+# Check your cleaned data
+head(clean_temp)
+summary(clean_temp)
+```
+```{r save-data}
+# Save cleaned data in both RDS and CSV formats
+saveRDS(clean_temp, here("output","cleaned_global_temp.rds"))
+write_csv(clean_temp, here("output","cleaned_global_temp.csv"))
+
+# Confirm files were saved
+list.files(here("output"))
+write_csv(clean_temp, here("output", "clean_global_temp.csv"))
+```
+```{r plot-temp}
+library(ggplot2)
+
+ggplot(clean_temp, aes(x = Year, y = Temp)) +
+  geom_line(color = "steelblue") +
+  labs(
+    title = "Global Land-Ocean Temperature Anomaly (1880–2025)",
+    x = "Year",
+    y = "Temperature Anomaly (\u00B0C)"   # fixed degree symbol
+  ) +
+  theme_minimal()
+```
+
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.

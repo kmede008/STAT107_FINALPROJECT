@@ -1,0 +1,21 @@
+---
+title: "HalfwayProjEvaluation.rmd"
+output: html_document
+date: "2025-11-15"
+---
+Title: Analyzing the Pattern of Global Temperature Change
+
+Abstract:
+	The main question we aim to answer in our project is: Do trends in global temperature over time on Earth show the occurrence of global warming? Based on the data collected and after we have cleaned it, we observed that there has been a consistent increase in global temperature as the years have passed. This was predicted before we collected the data, the data simply confirms our hypothesis to be true. It is evident that our data suggest that global warming truly exists.
+
+Introduction:
+	The purpose of our analysis is to provide an answer to whether or not global warming exists on our planet. There are people that do not believe in the existence of this phenomenon, therefore our analysis exists to hopefully provide scientific evidence that global warming exists (given that increasing global temperature trends over the years exist). We are specifically aiming to test the hypothesis that global warming is in fact occurring and has been for years. 
+
+Data:
+	The data we are using for the analysis comes from the National Centers for Environmental Information (NCEI). The data we collected from the website includes global land and ocean temperatures from 1850-2025, using a time scale of 5 years. To clean the data, we imported the csv file containing the data and using the summary and head functions. We identified missing values using the is.na function and as.numeric() to correct it. 
+
+Visualization: 
+  The visualization shows that global temperatures have risen steadily over time, with a sharp increase in recent decades. This supports our main question: whether trends in global temperature over time show evidence of global warming. After cleaning up the data, we observe a steady and consistent increase in the global temperature as the years progress, aligning with our predictions beforehand. Overall, the data suggests that global warming is occurring, as the long-term temperature trend rises significantly rather than remaining stable or randomly fluctuating.
+
+Analysis:
+	For our analysis, we plan to examine whether global temperature increases over time. To do so, we will take a look at how temperature values change over time and use a line graph to help identify an upward trend. This visualization allows us to determine whether temperatures rise, fall, or stay constant as time progresses. Based on the shape of the plotted line, we expect to see a clear increase in global temperature over the years.

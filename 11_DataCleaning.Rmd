@@ -30,21 +30,45 @@ library(here)
 source(here("r", "00_requirements.R"))
 source(here("r","01_funct_DataCleaning.R"))
 source(here("r","03_funct_Plots.R")) #for plotting
-
+library(lubridate)
 
 #First 10 lines of raw CSV for structure 
-raw_lines<- readLines(here("data", "GlobalTemperatures.csv"), n =10)
+raw_lines <- readLines(here("data", "GlobalTemperatures.csv"), n = 10)
 
-#Clean the data using function
-clean_temp<-clean_global_temp(here("data", "GlobalTemperatures.csv"))
+#Clean the data using your function
+clean_temp <- clean_global_temp(here("data", "GlobalTemperatures.csv"))
 
-#Save the cleaned data(CSV/RSD)
-save_cleaned_data(clean_temp,"output")
+# Save the cleaned data(CSV/RSD)
+save_cleaned_data(clean_temp, "output")
 
-#Inspect cleaned out data
+# Inspect cleaned data
 head(clean_temp)
 summary(clean_temp)
 
-#Plot cleaned temperature data
+# Plot cleaned temperature data
 plot_global_temp(clean_temp)
+
+# Box plot comparing temperature across groups
+ggplot(clean_temp, aes(x = Year, y = Temp)) +
+  geom_boxplot(fill = "lightblue", color = "darkblue") +
+  theme_minimal() +
+  labs(
+    title = "Temperature Distribution by Year",
+    x = "Year",
+    y = "Temperature (deg C)"
+  ) +
+  theme(
+    axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1)
+  )
+
+# Scatterplot showing trends
+ggplot(clean_temp, aes(x = Year, y = Temp)) +
+  geom_point(alpha = 0.3) +
+  geom_smooth(method = "lm", col = "red") +
+  labs(
+    title = "Scatterplot of Temperature Over Time",
+    x = "Year",
+    y = expression(Temperature~(degree*C))
+  ) +
+  theme_minimal()
 ```

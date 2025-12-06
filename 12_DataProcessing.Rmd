@@ -1,0 +1,58 @@
+---
+title: "Data Processing - Global Temperature"
+author: "Katherine Mederos, Claire Nguyen, Meghna Joshi "
+date: "2025-12-06"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+#-------------------------
+#Load packages and function scripts
+#-------------------------
+library(here)
+library(dplyr)
+library(zoo)       # for moving averages
+library(ggplot2)   # optional plotting
+
+# Source required R scripts
+source(here("r","00_requirements.R"))         # installs/loads packages
+source(here("r","02_funct_DataProcessing.R")) # contains add_moving_average() & categorize_temp()
+
+#-----------------------
+#Load clean data
+#-----------------------
+clean_temp <- readRDS(here("output","cleaned_global_temp.rds"))
+
+# Preview first few rows of cleaned data
+head(clean_temp)
+
+# -------------------------------
+# Process data
+# -------------------------------
+processed_temp <- add_moving_average(clean_temp, n = 5)
+processed_temp <- categorize_temp(processed_temp)
+
+# Preview processed data
+head(processed_temp)
+summary(processed_temp)
+
+# -------------------------------
+# Save processed data
+# -------------------------------
+write_csv(processed_temp, here("output","12_dataprocessed.csv"))
+saveRDS(processed_temp, here("output","12_dataprocessed.rds"))
+
+# -------------------------------
+# Quick plot for processed data
+# -------------------------------
+ggplot(processed_temp, aes(x = Year, y = Temp_MA, color = Temp_Category)) +
+  geom_line() +
+  labs(title = "Global Temperature with Moving Average and Categories",
+       x = "Year",
+       y = "Temperature Anomaly (°C)") +
+  theme_minimal()
+```

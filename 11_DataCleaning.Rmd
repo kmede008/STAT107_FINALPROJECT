@@ -1,0 +1,50 @@
+---
+title: "Data Cleaning - Global Temperature"
+author: "Katherine Mederos, Claire Nguyen, Meghna Joshi"
+date: "2025-11-11"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+library(here)  # handles paths reliably
+source(here("r","00_requirements.R"))
+knitr::opts_chunk$set(echo = TRUE)
+
+```
+
+##Introduction 
+
+This R Markdown file performs **data cleaning** for the Global Land-Ocean from 1880-2025. The goals of this file are:
+
+1. Inspect the raw data to comprehend the structure.
+2.Clean the data by renaming columns, modifying types, and fix missing values to clean the data.
+3. Store the clean data in RDS and CSV files to examine.
+4. Provide preliminary visualization in global temperatures trends.
+
+
+```{r clean-data}
+#Load required packages and functions
+library(here)
+source(here("r", "00_requirements.R"))
+source(here("r","01_funct_DataCleaning.R"))
+source(here("r","03_funct_Plots.R")) #for plotting
+
+
+#First 10 lines of raw CSV for structure 
+raw_lines<- readLines(here("data", "GlobalTemperatures.csv"), n =10)
+
+#Clean the data using function
+clean_temp<-clean_global_temp(here("data", "GlobalTemperatures.csv"))
+
+#Save the cleaned data(CSV/RSD)
+save_cleaned_data(clean_temp,"output")
+
+#Inspect cleaned out data
+head(clean_temp)
+summary(clean_temp)
+
+#Plot cleaned temperature data
+plot_global_temp(clean_temp)
+```
